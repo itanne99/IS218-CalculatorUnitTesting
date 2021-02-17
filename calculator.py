@@ -18,7 +18,10 @@ class Calculator:
             return 'error, divisor y can not be zero'
 
     def squareRoot(self, x):
-        return math.sqrt(x)
+        if int(x) > 0:
+            return float(math.sqrt(x))
+        else:
+            return 'error, input will result in imaginary number'
 
     def squared(self, x):
-        return pow(x, 2)
+        return float(x**2)
