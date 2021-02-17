@@ -4,4 +4,4 @@ ADD . .
 
 RUN pip install -r requirements.txt
 
-CMD ["python","-m","unittest","discover","-s","Tests"]
+CMD ["python3","-m","unittest","discover","tests"]

@@ -1,19 +1,26 @@
-import unittest, csv
+import csv
+import unittest
+import os
 
 # the .py file name is Calculator and the class name is also Calculator
 from src.calculator import Calculator
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # test data file path, the fills is a csv file.
-test_data_file_path = ('../testCases/Unit_Test_Addition.csv', '../testCases/Unit_Test_Subtraction.csv',
-                       '../testCases/Unit_Test_Multiplication.csv',
-                       '../testCases/Unit_Test_Division.csv', '../testCases/Unit_Test_Square_Root.csv',
-                       '../testCases/Unit_Test_Square.csv')
+test_data_file_path = (os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Addition.csv'),
+                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Subtraction.csv'),
+                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Multiplication.csv'),
+                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Division.csv'),
+                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Square_Root.csv'),
+                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Square.csv'))
 
 # test data file object
 test_data_file_object = list()
 
 # test data row list.
 test_data_row_list = list()
+
 
 # load test data from ./test_data.csv file.
 def load_test_data():
@@ -36,14 +43,13 @@ def load_test_data():
 
 # close and release the test data file object.
 def close_test_data_file():
-    global test_data_file_object,test_data_file_path
+    global test_data_file_object, test_data_file_path
     num = 0
     for i in test_data_file_object:
         if i is not None:
             i.close()
             print('close file ' + test_data_file_path[num] + ' complete.')
         num += 1
-
 
 
 '''
@@ -144,7 +150,7 @@ class TestCalculator(unittest.TestCase):
         for row in test_data_row_list[4]:
             x = row[0]
             expect_result = row[1]
-            result = self.calculator.root(x,2)
+            result = self.calculator.root(x, 2)
 
             print(' √ ' + str(x) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
@@ -156,10 +162,14 @@ class TestCalculator(unittest.TestCase):
             x = row[0]
             # the sixth column in the text line is (x / y) value.
             expect_result = row[1]
-            result = self.calculator.power(x,2)
+            result = self.calculator.power(x, 2)
 
             print(str(x) + '² ' + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
+
+
+if __name__ == '__main__':
+    unittest.main()
 
 
 def build_test_suite():
