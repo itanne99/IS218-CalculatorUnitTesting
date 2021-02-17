@@ -1,20 +1,19 @@
 import unittest, csv
 
 # the .py file name is Calculator and the class name is also Calculator
-from calculator import Calculator
+from src.calculator import Calculator
 
 # test data file path, the fills is a csv file.
-test_data_file_path = ('./testCases/Unit_Test_Addition.csv', './testCases/Unit_Test_Subtraction.csv',
-                       './testCases/Unit_Test_Multiplication.csv',
-                       './testCases/Unit_Test_Division.csv', './testCases/Unit_Test_Square_Root.csv',
-                       './testCases/Unit_Test_Square.csv')
+test_data_file_path = ('../testCases/Unit_Test_Addition.csv', '../testCases/Unit_Test_Subtraction.csv',
+                       '../testCases/Unit_Test_Multiplication.csv',
+                       '../testCases/Unit_Test_Division.csv', '../testCases/Unit_Test_Square_Root.csv',
+                       '../testCases/Unit_Test_Square.csv')
 
 # test data file object
 test_data_file_object = list()
 
 # test data row list.
 test_data_row_list = list()
-
 
 # load test data from ./test_data.csv file.
 def load_test_data():
@@ -96,7 +95,7 @@ class TestCalculator(unittest.TestCase):
             y = row[1]
             # the third column in the text line is (x + y) value.
             expect_result = row[2]
-            result = self.calculator.addition(x, y)
+            result = self.calculator.sum(x, y)
 
             print(str(x) + ' + ' + str(y) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
@@ -108,7 +107,7 @@ class TestCalculator(unittest.TestCase):
             x = row[0]
             y = row[1]
             expect_result = row[2]
-            result = self.calculator.subtraction(x, y)
+            result = self.calculator.subtract(x, y)
 
             print(str(x) + ' - ' + str(y) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertAlmostEqual(float(result), float(expect_result))
@@ -121,7 +120,7 @@ class TestCalculator(unittest.TestCase):
             y = row[1]
             # the fifth column in the text line is (x * y) value.
             expect_result = row[2]
-            result = self.calculator.multiplication(x, y)
+            result = self.calculator.multiply(x, y)
 
             print(str(x) + ' * ' + str(y) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
@@ -134,7 +133,7 @@ class TestCalculator(unittest.TestCase):
             y = row[1]
             # the sixth column in the text line is (x / y) value.
             expect_result = row[2]
-            result = self.calculator.division(x, y)
+            result = self.calculator.divide(x, y)
 
             print(str(x) + ' / ' + str(y) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
@@ -145,7 +144,7 @@ class TestCalculator(unittest.TestCase):
         for row in test_data_row_list[4]:
             x = row[0]
             expect_result = row[1]
-            result = self.calculator.squareRoot(int(x))
+            result = self.calculator.root(x,2)
 
             print(' √ ' + str(x) + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
@@ -157,7 +156,7 @@ class TestCalculator(unittest.TestCase):
             x = row[0]
             # the sixth column in the text line is (x / y) value.
             expect_result = row[1]
-            result = self.calculator.squared(int(x))
+            result = self.calculator.power(x,2)
 
             print(str(x) + '² ' + ' = ' + str(result) + ', expect ' + str(expect_result))
             self.assertEqual(float(result), float(expect_result))
