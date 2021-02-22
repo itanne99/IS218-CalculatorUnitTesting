@@ -142,7 +142,11 @@ class TestCalculator(unittest.TestCase):
             result = self.calculator.divide(x, y)
 
             print(str(x) + ' / ' + str(y) + ' = ' + str(result) + ', expect ' + str(expect_result))
-            self.assertEqual(float(result), float(expect_result))
+            if isinstance(result, float):
+                self.assertAlmostEqual(result, float(expect_result))
+            else:
+                self.assertEqual(result, expect_result)
+
 
     def test_squareRoot(self):
         print('')
