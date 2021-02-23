@@ -1,61 +1,17 @@
-import csv
+
+# Move Imports to fileReader.py ^^
 import unittest
-import os
 
 # the .py file name is Calculator and the class name is also Calculator
+
+# Move Section to fileReader.py
 from src.calculator import Calculator
 
-THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# test data file path, the fills is a csv file.
-test_data_file_path = (os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Addition.csv'),
-                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Subtraction.csv'),
-                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Multiplication.csv'),
-                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Division.csv'),
-                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Square_Root.csv'),
-                       os.path.join(THIS_DIR, os.pardir, 'testCases/Unit_Test_Square.csv'))
-
-# test data file object
-test_data_file_object = list()
-
-# test data row list.
-test_data_row_list = list()
-
-
-# load test data from ./test_data.csv file.
-def load_test_data():
-    # NOTE TO SELF: Make these lists of lists. So each index will be a file and each object will be that file, and each data row index will be a file
-    global test_data_file_object, test_data_row_list
-    # open test data csv file.
-    num = 0
-    for i in test_data_file_path:
-        test_data_row_list.append(list())
-        test_data_file_object.append(open(i, 'r'))
-        # read the csv file and return the text line list.
-        csv_reader = csv.reader(test_data_file_object[num], delimiter=',')
-
-        for row in csv_reader:
-            test_data_row_list[num].append(row)
-        num += 1
-
-        print('open and load data from ' + i + ' complete.')
-
-
-# close and release the test data file object.
-def close_test_data_file():
-    global test_data_file_object, test_data_file_path
-    num = 0
-    for i in test_data_file_object:
-        if i is not None:
-            i.close()
-            print('close file ' + test_data_file_path[num] + ' complete.')
-        num += 1
-
+from tests.src.fileReader import FileReader
 
 '''
 This is the TestCase class that test Calculator class functions.
 '''
-
 
 class TestCalculator(unittest.TestCase):
     # this is the Calculator class instance.
@@ -64,20 +20,19 @@ class TestCalculator(unittest.TestCase):
     # class level setup function, execute once only before any test function.
     @classmethod
     def setUpClass(cls):
-        load_test_data()
         print('')
         print('setUpClass')
 
     # class level setup function, execute once only after all test function's execution.
     @classmethod
     def tearDownClass(cls):
-        close_test_data_file()
         print('')
         print('tearDownClass')
 
     # execute before every test case function run.
     def setUp(self):
         self.calculator = Calculator()
+        self.fileReader = FileReader()
         print('')
         print('setUp')
 
@@ -86,6 +41,7 @@ class TestCalculator(unittest.TestCase):
         # release the Calculator object.
         if self.calculator is not None:
             self.calculator = None
+        self.fileReader.closeFile()
         print('')
         print('tearDown')
 
@@ -94,7 +50,7 @@ class TestCalculator(unittest.TestCase):
         print('')
         print('******test_addition******')
         # get each row text from the csv file.
-        for row in test_data_row_list[0]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Addition.csv"):
             # the first column in the text line is x value.
             x = row[0]
             # the second column in the text line is y value.
@@ -109,7 +65,7 @@ class TestCalculator(unittest.TestCase):
     def test_subtraction(self):
         print('')
         print('******test_subtraction******')
-        for row in test_data_row_list[1]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Subtraction.csv"):
             x = row[0]
             y = row[1]
             expect_result = row[2]
@@ -121,7 +77,7 @@ class TestCalculator(unittest.TestCase):
     def test_multiplication(self):
         print('')
         print('******test_multiplication******')
-        for row in test_data_row_list[2]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Multiplication.csv"):
             x = row[0]
             y = row[1]
             # the fifth column in the text line is (x * y) value.
@@ -134,7 +90,7 @@ class TestCalculator(unittest.TestCase):
     def test_division(self):
         print('')
         print('******test_division******')
-        for row in test_data_row_list[3]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Division.csv"):
             x = row[0]
             y = row[1]
             # the sixth column in the text line is (x / y) value.
@@ -151,7 +107,7 @@ class TestCalculator(unittest.TestCase):
     def test_squareRoot(self):
         print('')
         print('******test_squareRoot******')
-        for row in test_data_row_list[4]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Square_Root.csv"):
             x = row[0]
             expect_result = row[1]
             result = self.calculator.root(x, 2)
@@ -162,7 +118,7 @@ class TestCalculator(unittest.TestCase):
     def test_squared(self):
         print('')
         print('******test_squared******')
-        for row in test_data_row_list[5]:
+        for row in self.fileReader.openFile("testCases/Unit_Test_Square.csv"):
             x = row[0]
             # the sixth column in the text line is (x / y) value.
             expect_result = row[1]
